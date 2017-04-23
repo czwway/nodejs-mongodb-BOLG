@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blog</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/imgstyle.css">
+    <script charset="utf-8" src="/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+    <script>
+      var editor;
+      KindEditor.ready(function(K){
+//        window.editor = K.create('#kindeditor');
+        editor = K.create('textarea',{
+          allowImageUpload : false,
+          items : [
+                  'fontname','fontsize','|', 'forecolor', 'hilitecolor', 'bold', 'italic',
+                  'underline', 'removeformat', '|', 'justifyeft', 'justifycenter', 'justifyright',
+                  'insertorderedlist','insertunorderedlist','|','emoticons','image','link'
+          ]
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="glyphicon glyphicon-home header-left">
+        <a href="/">home</a>
+      </div>
+      <div class="header-right">
+        <% if (user) { %>
+          <span class="glyphicon glyphicon-user ">
+            hello,<a id="username" href="/u/<%= user.name %>"><%= user.name %></a>
+          </span>
+        <span class="logout">
+          <a class="glyphicon glyphicon-off" onclick="logout(this)"></a>
+        </span>
+        <% } else { %>
+          <span>请先[<a href="/login">登录</a>]或[<a href="/reg">注册</a>]</span>
+        <% } %>
+      </div>
+    </header>
+    <script>
+      function logout(out){
+        if(confirm("真的要退出吗？")){
+          out.href = '/logout';
+        }
+      }
+    </script>
+    <!--<div class="container main" id="main">-->
+      <!--<div class="row">-->
+        <!--<div class="col-sm-8 main-left">-->

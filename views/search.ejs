@@ -1,0 +1,25 @@
+<%- include header %>
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+      <ul class="archive-list">
+  <% var lastYear = 0 %>
+  <% posts.forEach(function(post, index){%>
+  <% if(lastYear != post.time.year){ %>
+  <li><h3><%= post.time.year  %></h3></li>
+  <% lastYear=post.time.year } %>
+  <li class="archive-li">
+    <time class="archive-time"><%= post.time.day %></time>
+    <span class="interval">|</span>
+    <a class="archive-a" href="/u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>"><%= post.title %></a>
+  </li>
+  <% })
+  if(lastYear == 0){  %>
+    <section class="search-no-post">我跑了整个mongodb世界，也找不到你在苦苦寻找的keyword!</section>
+  <% } %>
+</ul>
+    </div>
+    <div class="col-sm-4 main-right"></div>
+  </div>
+</div>
+<%- include footer %>

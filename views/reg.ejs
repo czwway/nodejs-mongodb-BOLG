@@ -1,0 +1,157 @@
+<%- include header %>
+<script type="text/javascript" src="/javascripts/cropbox.js"></script>
+<!-- Modal -->
+<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">选择上传属于你的头像吧*-*</h4>
+      </div>
+      <div class="modal-body">
+        <!--头像上传内容-->
+        <div class="container">
+          <div class="imageBox">
+            <div class="thumbBox"></div>
+          </div>
+          <div class="action">
+            <!-- <input type="file" id="file" style=" width: 200px">-->
+            <div class="new-contentarea tc">
+              <a href="javascript:void(0)" class="upload-img">
+                <label for="upload-file">选择图片</label>
+              </a>
+              <input type="file" class="" name="upload-file" id="upload-file" />
+            </div>
+            <input type="button" id="btnyes"  class="Btnsty_peyton" value="确认">
+            <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
+            <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"  >
+            <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" >
+            <div id="show"></div>
+          </div>
+          <div class="cropped"></div>
+          <!--头像上传内容-->
+        </div>
+        <script type="text/javascript">
+//          function huoqu(){
+//            $('#show').html('<img src="'+$('#img1').attr("src")+'" />');
+//          }
+          $(window).load(function() {
+            var options =
+            {
+              thumbBox: '.thumbBox',
+              spinner: '.spinner',
+              imgSrc: 'images/avatar.png'
+            }
+            var cropper = $('.imageBox').cropbox(options);
+            $('#upload-file').on('change', function(){
+              var reader = new FileReader();
+              reader.onload = function(e) {
+                options.imgSrc = e.target.result;
+                cropper = $('.imageBox').cropbox(options);
+              }
+              reader.readAsDataURL(this.files[0]);
+              this.files = [];
+            })
+            $('#btnCrop').on('click', function(){
+              var img = cropper.getDataURL();
+              $('.cropped').html('');
+              $('.cropped').append('<p>1111</p><img id="img1" src="'+img+'" align="absmiddle" style="width:50px;margin-top:4px;border-radius:50px;box-shadow:0px 0px 12px #7E7E7E;" ><p>64px*64px</p>');
+              })
+            $('#btnZoomIn').on('click', function(){
+              cropper.zoomIn();
+            })
+            $('#btnZoomOut').on('click', function(){
+              cropper.zoomOut();
+            })
+            $('#btnyes').on('click', function(){
+              if($("#img1").attr("id") == undefined){
+                return false;
+              }else{
+                $('#touxiangbox').html('<img id="touxiang" class="touxiang" src="'+$("#img1").attr("src")+'" />')
+                $('#portrait').val($("#img1").attr("src"));
+                $('#myModal').modal('hide');
+              }
+            })
+          });
+        </script>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+<!-- Modal  结束-->
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+      <div class="main-regform">
+  <form method="post" onsubmit="return formcheck()">
+    <figure class="input-line">
+      <label for="name" class="input_label">昵称：</label>
+      <input class="form-control" id="niname" name="niname" type="text" />
+    </figure>
+    <figure class="input-line">
+    <label for="name" class="input_label">用户名：</label>
+    <input class="form-control" id="name" name="name" type="text" />
+    </figure>
+    <figure class="input-line">
+    <label for="password" class="input_label">密码：</label>
+    <input class="form-control" id="password" name="password" type="password" />
+    </figure>
+    <figure class="input-line">
+    <label for="password-repear" class="input_label">确认密码：</label>
+    <input class="form-control" id="password-repear" name="password-repear" type="password" />
+    </figure>
+    <figure class="input-line">
+      <label for="email" class="input_label">邮箱：</label>
+      <input class="form-control" id="email" name="email" type="email" />
+    </figure>
+    <figure class="input-line">
+      <label for="portrait" class="input_label">头像：</label>
+      <span id="touxiangbox">
+        <span type="button" class="btn btn-primary portrait" data-toggle="modal" data-target="#myModal">
+          <span class="glyphicon glyphicon-plus-sign" onclick=""></span>
+        </span>
+      </span>
+      <input class="form-control" id="portrait" name="portrait" value="" type="hidden" />
+    </figure>
+    <input class="btn-submit" type="submit" value="注册">
+    <article class="flash-hint" id="flash-hint">
+      <% if (success){ %>
+      <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><%= success %></div>
+      <% } %>
+      <% if (error){ %>
+      <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><%= error %></div>
+      <% } %>
+    </article>
+  </form>
+</div>
+      <script>
+  function formcheck(){
+    let name = $.trim($('#name').val());
+    let password = $('#password').val();
+    let password_repear = $('#password-repear').val();
+    let email = $('#email').val();
+    let myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    if(name.length == 0 || name == null || name == undefined ){
+      $('#flash-hint').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>请输入用户名 *</div>')
+      return false;
+    }else if(password.length <6 || password == null || password == undefined || password.length >16){
+      $('#flash-hint').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>请输入6-16位登录密码 *</div>');
+      return false;
+    }else if(password !== password_repear){
+      $('#flash-hint').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>两次密码不一致 *</div>');
+      return false;
+    }else if(!myreg.test(email)){
+      $('#flash-hint').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>请输入正确邮箱格式 *</div>');
+      return false;
+    }else if ($("#touxiang").attr("id") == undefined){
+      $('#flash-hint').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>上传属于你的头像吧 *</div>');
+      return false;
+    }
+  }
+</script>
+    </div>
+    <div class="col-sm-4 main-right"></div>
+  </div>
+</div>
+<%- include footer %>

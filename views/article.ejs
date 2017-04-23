@@ -1,0 +1,130 @@
+<%- include header %>
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+      <section class="essay">
+  <h2 cl><%= post.title  %></h2>
+
+  <article class="essay-info">
+    <span class="glyphicon glyphicon-user"> <a href="/u/<%= post.name %>"><%= post.name %></a></span>
+    <span class="interval">|</span>
+    <span class="glyphicon glyphicon-time"> <%= post.time.minute %></span>
+  </article>
+  <article><%- post.post %></article>
+  <article class="essay-info">
+    <span class="glyphicon glyphicon-eye-open" > <%= post.pv %></span>
+    <span class="interval">|</span>
+    <span class="glyphicon glyphicon-comment"> <%= post.comments.length %></span>
+  </article>
+
+  <% if( user && (user.name == post.name )){ %>
+    <div class="btn-group" role="group" aria-label="">
+      <button type="button" class="btn btn-default btn-edit">
+        <a href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">
+          <span class="glyphicon glyphicon-edit"></span>
+          <p>编辑</p>
+        </a>
+      </button>
+      <button type="button" class="btn btn-default  btn-edit">
+        <a href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">
+          <span class="glyphicon glyphicon-trash"></span>
+          <p>删除</p>
+        </a>
+      </button>
+    </div>
+  <% } else if( user ) {
+         for(var coll = 0; coll<post.like.length; coll++){
+          if(user.name == post.like[coll]){
+            var likeflag = true;
+          }else{
+            var likeflag = false;
+          }
+        }
+       for(var col = 0; col<post.collect.length; col++){
+          if(user.name == post.collect[col]){
+            var collectflag = true;
+          }else{
+            var collectflag = false;
+          }
+        }
+  %>
+    <div class="btn-group" role="group" aria-label="">
+      <% if(likeflag){ %>
+      <button type="button" id="like" class="btn btn-default btn-dispose">
+      <% }else{%>
+        <button type="button" id="like" class="btn btn-default">
+      <% } %>
+
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <p>点赞</p>
+      </button>
+        <% if(likeflag){ %>
+        <button type="button" id="collect" class="btn btn-default btn-dispose">
+        <% }else{%>
+        <button type="button" id="collect" class="btn btn-default">
+        <% } %>
+        <span class="glyphicon glyphicon-star"></span>
+        <p>收藏</p>
+      </button>
+    </div>
+
+
+        <script>
+
+          $('#like').click(function(){
+            if($('#like').hasClass('btn-dispose')){
+              return false;
+            }else {
+              var url = document.URL;
+              var paramstext = url.substring(url.indexOf('u'));
+              var paramsarray = paramstext.split("/");
+              var username = $('#username').text();
+              var params = {name: paramsarray[1], day: paramsarray[2], title: paramsarray[3], username: username, like: "like"};
+              $.ajax({
+                data: params,
+                url: 'http://localhost:3000/article',
+                dataType: 'json',
+                type: 'post',
+                cache: false,
+                success: function (data) {
+                  if(data.message == 1){
+                    $('#like').addClass('btn-dispose');
+                    $('#like').blur();
+                  };
+                },
+                error: function (jqXHR, textStatus, errorThrown) {alert('error ' + textStatus + " " + errorThrown);}
+              });
+            }
+          });//like
+          $('#collect').click(function(){
+            if($('#collect').hasClass('btn-dispose')){
+              return false;
+            }else{
+              var url = document.URL;
+              var paramstext = url.substring(url.indexOf('u'));
+              var paramsarray = paramstext.split("/");
+              var username = $('#username').text();
+              var params ={
+                name: paramsarray[1], day: paramsarray[2], title: paramsarray[3], username:username
+              };
+              $.ajax({
+                data: params, url: 'http://localhost:3000/article', dataType: 'json', type: 'post', cache: false,
+                success: function(data){
+                  if(data.message == 1){
+                    $('#collect').addClass('btn-dispose');
+                    $('#collect').blur();
+                  };
+                },
+                error: function(jqXHR, textStatus, errorThrown){alert('error ' + textStatus + " " + errorThrown);}
+              });
+            }
+          });//like
+        </script>
+  <% } %>
+</section>
+      <%- include comment %>
+    </div>
+    <div class="col-sm-4 main-right"></div>
+  </div>
+</div>
+<%- include footer %>

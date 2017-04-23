@@ -1,0 +1,34 @@
+<%- include header %>
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+      <form method="post" onsubmit="return formcheck()">
+  <span class="post-h">标题：</span>
+  <input type="text" class="form-control" name="title" id="title" style="width: 80%"/>
+  <span class="post-h">正文：</span>
+  <textarea name="post" class="textarea" id="textarea"></textarea>
+  <input class="btn-submit" type="submit" value="发表"/>
+  <article class="flash-hint" id="flash-hint">
+    <% if (success){ %>
+    <span><%= success %></span>
+    <% } %>
+    <% if (error){ %>
+    <span><%= error %></span>
+    <% } %>
+  </article>
+</form>
+      <script>
+
+  function formcheck(){
+    let title = $('#title').val();
+    if(title.length == 0 || title == null || title == undefined ){
+      $('#flash-hint').html('请输入文章标题 *')
+      return false;
+    }
+  }
+</script>
+    </div>
+    <div class="col-sm-4 main-right"></div>
+   </div>
+</div>
+<%- include footer %>

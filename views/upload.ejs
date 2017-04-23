@@ -1,0 +1,27 @@
+<%- include header %>
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+      <form method='post' action='/upload' enctype='multipart/form-data' >
+  <figure class="input-line">
+    <input type="file" name="file1" />
+  </figure>
+  <figure class="input-line">
+    <input type="file" name="file2" />
+  </figure>
+  <figure class="input-line">
+    <input type="file" name="file3" />
+  </figure>
+  <figure class="input-line">
+    <input type="file" name="file4" />
+  </figure>
+  <figure class="input-line">
+    <input type="file" name="file5" />
+  </figure>
+  <input type="submit" class="btn-submit">
+</form>
+    </div>
+    <div class="col-sm-4 main-right"></div>
+  </div>
+</div>
+<%- include footer %>

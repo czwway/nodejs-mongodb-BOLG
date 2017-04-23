@@ -1,0 +1,41 @@
+<br/>
+<section class="comment">
+    <% post.comments.forEach(function(comment, index){ %>
+  <article class="comment-box">
+      <p class="comment-box-info">
+        <span ><img class="touxiang" src="<%= comment.portrait %>" /></span>
+        <a href="<%= comment.website %>"><%= comment.name %></a>
+        <span class="interval"> </span><span class="">发表于：<%= comment.time %></span>
+      </p>
+      <p class="comment-box-content"><%- comment.content %></p>
+  </article>
+      <% }) %>
+</section>
+
+<!--为登录的游客无法留言-->
+<% if(user){ %>
+<form method="post">
+  <figure class="hidden">
+    <input type="hidden" name="name" value="<%= user.name %>" /><br/>
+  </figure>
+  <figure class="hidden">
+    <input type="hidden" name="email" value="<%= user.email %>" /><br/>
+  </figure>
+  <figure class="hidden">
+    <input type="text" name="portrait" value="<%= user.portrait %>" /><br/>
+  </figure>
+  <figure class="hidden">
+    <input type="hidden" name="website" value="/u/<%= user.name %>" /><br/>
+  </figure>
+  <label>来这里，留下你的留言吧 -- </label>
+  <textarea name="content" class="textarea comment-textarea"></textarea><br/>
+  <input class="btn-submit" type="submit" value="留言" style="margin-top: 0"/>
+</form>
+<% } else {%>
+<div class="">
+  <span>请先[<a href="/login">登录</a>]或[<a href="/reg">注册</a>]</span>
+</div>
+
+
+
+<% } %>

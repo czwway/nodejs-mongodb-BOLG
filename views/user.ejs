@@ -1,0 +1,65 @@
+<%- include header %>
+<div class="container user-h">
+  <ol class="user-h-ol">
+    <li class="user-h-user">Welcome to <%= essayuser.niname %></li>
+    <li>hello</li>
+    <li>hello</li>
+    <li>hello</li>
+    <li>hello</li>
+  </ol>
+</div>
+<div class="container main" id="main">
+  <div class="row">
+    <div class="col-sm-8 main-left">
+    <%
+    if(posts){
+            posts.forEach(function (post, index){ %>
+    <section class="essay-list">
+      <header class="essay-list-h">
+        <h2><a href="/u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>"><%= post.title %></a></h2>
+      </header>
+      <article><%- (post.post).substring(0,100)+'......' %></article>
+      <article class="essay-info">
+        <span class="glyphicon glyphicon-user"> <a href="/u/<%= post.name %>"><%= post.name %></a></span>
+        <span class="interval">|</span>
+        <span class="glyphicon glyphicon-time"> <%= post.time.minute %></span>
+        <span class="interval">|</span>
+        <span class="glyphicon glyphicon-eye-open" > <%= post.pv %></span>
+        <span class="interval">|</span>
+        <span class="glyphicon glyphicon-comment"> <%= post.comments.length %></span>
+      </article>
+    </section>
+    <%
+    })
+    }
+    %>
+    </div>
+    <div class="col-sm-4 main-right">
+      <div class="panel panel-info">
+        <div class="panel-heading">作者简介</div>
+        <div class="panel-body">
+          <p><img class="touxiang" src="<%= essayuser.portrait  %>" /></p>
+          <p>昵称： <%= essayuser.niname  %></p>
+          <p>活动时间： <%=  Math.floor((Date.parse(new Date())-essayuser.time)/(24*3600*1000)) %>天</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include footer %>
